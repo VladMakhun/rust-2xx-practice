@@ -169,3 +169,109 @@ fn main() {
         _ => (),
     }
 }
+
+//8.2 Patterns
+
+//1. 🌟🌟 Use | to match several values, use ..= to match an inclusive range.
+
+fn main() {
+    match_number(3); 
+}
+
+fn match_number(n: i32) {
+    match n {
+        1 => println!("One!"),
+        2 | 3 | 4 | 5 => println!("match 2 -> 5"), 
+        6..=10 => {
+            println!("match 6 -> 10")
+        },
+        _ => {
+            println!("match -infinite -> 0 or 11 -> +infinite")
+        }
+    }
+}
+
+//2. 🌟🌟🌟 The @ operator lets us create a variable that holds a value, at the same time we are testing that value to see whether it matches a pattern.
+
+
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+fn main() {
+    // Fill in the blank to let p match the second arm
+    let p = Point { x: 3, y: 20 };
+
+    match p {
+        Point { x, y: 0 } => println!("On the x axis at {}", x),
+        Point { x: 0..=5, y: y@ (10 | 20 | 30) } => println!("On the y axis at {}", y),
+        Point { x, y } => println!("On neither axis: ({}, {})", x, y),
+    }
+}
+
+//3. Fix the errors
+
+enum Message {
+    Hello { id: i32 },
+}
+
+fn main() {
+    let msg = Message::Hello { id: 5 };
+
+    match msg {
+        Message::Hello { id } if (3..=7).contains(&id) => { 
+            println!("Found an id in range [3, 7]: {}", id);
+        },
+        Message::Hello { id } if id == 10 || id == 11 || id == 12 => { 
+            println!("Found an id in another range [10, 12]: {}", id);
+        },
+        Message::Hello { id } => {
+            println!("Found some other id: {}", id);
+        }
+    }
+}
+
+
+//4. 🌟🌟 A match guard is an additional if condition specified after the pattern in a match arm that must also match, along with the pattern matching, for that arm to be chosen.
+
+
+// Fill in the blank to make the code work, `split` MUST be used
+fn main() {
+    let num = Some(4);
+    let split = 5;
+    match num {
+        Some(x) if x < split => assert!(x < split),
+        Some(x) => assert!(x >= split),
+        None => (),
+    }
+
+    println!("Success!");
+}
+
+//5. 🌟🌟 Ignoring remaining parts of the value with ..
+
+
+// Fill the blank to make the code work
+fn main() {
+    let numbers = (2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048);
+
+    match numbers {
+        (first, _, _, _, _, _, _, _, _, _, last) => {
+           assert_eq!(first, 2);
+           assert_eq!(last, 2048);
+        }
+    }
+
+    println!("Success!");
+}
+//6. 🌟🌟 Using pattern &mut V to match a mutable reference requires you to be very careful, due to V being a value after matching.
+
+fn main() {
+    let mut v = String::from("hello,");
+    let r = &mut v;
+
+    match r {
+        value => value.push_str(" world!") // Remove `&mut` from the pattern
+    }
+}
