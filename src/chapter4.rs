@@ -103,3 +103,178 @@ fn main() {
     println!("Success!");
 }
 
+///Char, Bool and Unit
+
+// first task 
+
+fn main() {
+    let c1 = 'a';
+    assert_eq!(size_of_val(&c1), 4); 
+
+    let c2 = '中';
+    assert_eq!(size_of_val(&c2), 4); 
+
+    println!("Success!");
+}
+
+// second task 
+
+fn main() {
+    let c1 = "中";
+    
+    print_char(c1.chars().next().unwrap()); 
+}
+
+fn print_char(c: char) {
+    println!("{}", c);
+}
+
+
+// third task 
+
+fn main() {
+    let _f: bool = false;
+
+    let t = true;
+    if !t {
+        println!("Success!");
+    } else { 
+        println!("Condition was false, so we reach here!");
+    }
+} 
+
+// four task 
+
+fn main() {
+    let f = false; 
+    let t = true && false; 
+    assert_eq!(t, f); 
+
+    println!("Success!");
+}
+
+//five task 
+
+fn main() {
+    let _v: () = (); 
+
+    let v = implicitly_ret_unit();
+    assert_eq!(v, ()); 
+    println!("Success!");
+}
+
+fn implicitly_ret_unit() {
+    println!("I will return a ()");
+}
+
+// six task 
+
+use std::mem::size_of_val;
+
+fn main() {
+    let unit: () = ();
+    assert!(size_of_val(&unit) == 0); 
+
+    println!("Success!");
+}
+
+
+//4.3 Statements and Expressions
+
+// first task 
+
+fn main() {
+    let v = {
+        let mut x = 1;
+        x += 2;
+        x 
+    };
+
+    assert_eq!(v, 3);
+
+    println!("Success!");
+}
+
+
+// second task
+
+fn main() {
+    let v = {
+        let x = 3; 
+        x 
+    };
+
+    assert!(v == 3);
+
+    println!("Success!");
+}
+
+// third task 
+
+fn main() {
+    let s = sum(1, 2);
+    assert_eq!(s, 3);
+
+    println!("Success!");
+}
+
+fn sum(x: i32, y: i32) -> i32 {
+    x + y 
+}
+
+/// 4.4 Functions
+
+// first task
+
+fn main() {
+    let (x, y) = (1, 2);
+    let s = sum(x, y);
+
+    assert_eq!(s, 3);
+
+    println!("Success!");
+}
+
+fn sum(x: i32, y: i32) -> i32 { 
+    x + y 
+}
+
+// second task 
+
+fn main() {
+    print();
+}
+
+// Change return type to unit type ()
+fn print() -> () {
+    println!("Success!");
+}
+
+// third task 
+
+fn main() {
+    never_return();
+
+    println!("Failed!"); // This line will never be reached
+}
+
+fn never_return() -> ! {
+    loop {} // Infinite loop
+}
+
+
+// five task 
+
+fn main() {
+    let b = true; 
+
+    let _v = match b {
+        true => 1,
+        false => {
+            println!("Success!");
+            panic!("we have no value for `false`, but we can panic");
+        }
+    };
+
+    println!("Exercise Failed if printing out this line!");
+}
