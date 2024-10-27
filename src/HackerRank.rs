@@ -255,5 +255,167 @@ fn main() {
 }
 
 
+// mini - max sum
+
+use std::io::{self, BufRead};
+
+/*
+ * Complete the 'miniMaxSum' function below.
+ *
+ * The function accepts INTEGER_ARRAY arr as parameter.
+ */
+
+fn miniMaxSum(arr: &[i32]) {
+    let mut sorted_arr = arr.to_vec();
+    sorted_arr.sort();
+
+    let min_sum: i64 = sorted_arr.iter().take(4).map(|&x| x as i64).sum();
+    let max_sum: i64 = sorted_arr.iter().skip(1).map(|&x| x as i64).sum();
+
+    println!("{} {}", min_sum, max_sum);
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let arr: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    miniMaxSum(&arr);
+}
+
+
+// Birthday Cake Candles
+
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, Write};
+
+/*
+ * Complete the 'birthdayCakeCandles' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts INTEGER_ARRAY candles as parameter.
+ */
+
+fn birthdayCakeCandles(candles: &[i32]) -> i32 {
+    let max_height = candles.iter().max().unwrap();
+    candles.iter().filter(|&&x| x == *max_height).count() as i32
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let mut fptr = File::create(env::var("OUTPUT_PATH").unwrap()).unwrap();
+
+    let _candles_count = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
+
+    let candles: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    let result = birthdayCakeCandles(&candles);
+
+    writeln!(&mut fptr, "{}", result).ok();
+}
+
+
+//Time Conversion
+
+fn timeConversion(s: &str) -> String {
+    let period = &s[s.len() - 2..];
+    let time = &s[..s.len() - 2];
+    let mut parts: Vec<&str> = time.split(':').collect();
+    
+    let hour = parts[0].parse::<u32>().unwrap();
+    let new_hour = if period == "AM" {
+        if hour == 12 { "00".to_string() } else { format!("{:02}", hour) }
+    } else {
+        if hour != 12 { format!("{:02}", hour + 12) } else { "12".to_string() }
+    };
+    
+    parts[0] = &new_hour;
+    parts.join(":")
+}
+
+fn main() {
+    use std::env;
+    use std::fs::File;
+    use std::io::{self, BufRead, Write};
+
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+    let mut fptr = File::create(env::var("OUTPUT_PATH").unwrap()).unwrap();
+    let s = stdin_iterator.next().unwrap().unwrap();
+    let result = timeConversion(&s);
+    writeln!(&mut fptr, "{}", result).ok();
+}
+
+
+// Grading Students
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, Write};
+
+/*
+ * Complete the 'gradingStudents' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts INTEGER_ARRAY grades as parameter.
+ */
+
+fn gradingStudents(grades: &[i32]) -> Vec<i32> {
+    grades.iter().map(|&grade| {
+        if grade < 38 {
+            grade
+        } else {
+            let next_multiple_of_5 = (grade + 4) / 5 * 5;
+            if next_multiple_of_5 - grade < 3 {
+                next_multiple_of_5
+            } else {
+                grade
+            }
+        }
+    }).collect()
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let mut fptr = File::create(env::var("OUTPUT_PATH").unwrap()).unwrap();
+
+    let grades_count = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
+
+    let mut grades: Vec<i32> = Vec::with_capacity(grades_count as usize);
+
+    for _ in 0..grades_count {
+        let grades_item = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
+        grades.push(grades_item);
+    }
+
+    let result = gradingStudents(&grades);
+
+    for i in 0..result.len() {
+        write!(&mut fptr, "{}", result[i]).ok();
+
+        if i != result.len() - 1 {
+            writeln!(&mut fptr).ok();
+        }
+    }
+
+    writeln!(&mut fptr).ok();
+}
+
+
 // 
 
