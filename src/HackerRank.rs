@@ -255,7 +255,7 @@ fn main() {
 }
 
 
-// mini - max sum
+// mini - max sum 7 
 
 use std::io::{self, BufRead};
 
@@ -289,7 +289,7 @@ fn main() {
 }
 
 
-// Birthday Cake Candles
+// Birthday Cake Candles 8 
 
 
 use std::env;
@@ -328,7 +328,7 @@ fn main() {
 }
 
 
-//Time Conversion
+//Time Conversion 9 
 
 fn timeConversion(s: &str) -> String {
     let period = &s[s.len() - 2..];
@@ -360,7 +360,7 @@ fn main() {
 }
 
 
-// Grading Students
+// Grading Students 10 
 
 use std::env;
 use std::fs::File;
@@ -417,5 +417,197 @@ fn main() {
 }
 
 
-// 
+// Apple and Orange 11
+
+use std::io::{self, BufRead};
+
+/*
+ * Complete the 'countApplesAndOranges' function below.
+ *
+ * The function accepts following parameters:
+ *  1. INTEGER s
+ *  2. INTEGER t
+ *  3. INTEGER a
+ *  4. INTEGER b
+ *  5. INTEGER_ARRAY apples
+ *  6. INTEGER_ARRAY oranges
+ */
+
+fn countApplesAndOranges(s: i32, t: i32, a: i32, b: i32, apples: &[i32], oranges: &[i32]) {
+    let apples_on_house = apples.iter()
+        .map(|&apple| a + apple)
+        .filter(|&pos| pos >= s && pos <= t)
+        .count();
+    
+    let oranges_on_house = oranges.iter()
+        .map(|&orange| b + orange)
+        .filter(|&pos| pos >= s && pos <= t)
+        .count();
+    
+    println!("{}", apples_on_house);
+    println!("{}", oranges_on_house);
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let first_multiple_input: Vec<String> = stdin_iterator.next().unwrap().unwrap()
+        .split(' ')
+        .map(|s| s.to_string())
+        .collect();
+
+    let s = first_multiple_input[0].trim().parse::<i32>().unwrap();
+
+    let t = first_multiple_input[1].trim().parse::<i32>().unwrap();
+
+    let second_multiple_input: Vec<String> = stdin_iterator.next().unwrap().unwrap()
+        .split(' ')
+        .map(|s| s.to_string())
+        .collect();
+
+    let a = second_multiple_input[0].trim().parse::<i32>().unwrap();
+
+    let b = second_multiple_input[1].trim().parse::<i32>().unwrap();
+
+    let third_multiple_input: Vec<String> = stdin_iterator.next().unwrap().unwrap()
+        .split(' ')
+        .map(|s| s.to_string())
+        .collect();
+
+    let m = third_multiple_input[0].trim().parse::<i32>().unwrap();
+
+    let n = third_multiple_input[1].trim().parse::<i32>().unwrap();
+
+    let apples: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    let oranges: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    countApplesAndOranges(s, t, a, b, &apples, &oranges);
+}
+
+
+// Number Line Jumps 12
+
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, Write};
+
+/*
+ * Complete the 'kangaroo' function below.
+ *
+ * The function is expected to return a STRING.
+ * The function accepts following parameters:
+ *  1. INTEGER x1
+ *  2. INTEGER v1
+ *  3. INTEGER x2
+ *  4. INTEGER v2
+ */
+
+fn kangaroo(x1: i32, v1: i32, x2: i32, v2: i32) -> String {
+    if v1 != v2 {
+        let n = (x2 - x1) as f64 / (v1 - v2) as f64;
+        if n > 0.0 && n.fract() == 0.0 {
+            return "YES".to_string();
+        }
+    }
+    "NO".to_string()
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let mut fptr = File::create(env::var("OUTPUT_PATH").unwrap()).unwrap();
+
+    let first_multiple_input: Vec<String> = stdin_iterator.next().unwrap().unwrap()
+        .split(' ')
+        .map(|s| s.to_string())
+        .collect();
+
+    let x1 = first_multiple_input[0].trim().parse::<i32>().unwrap();
+
+    let v1 = first_multiple_input[1].trim().parse::<i32>().unwrap();
+
+    let x2 = first_multiple_input[2].trim().parse::<i32>().unwrap();
+
+    let v2 = first_multiple_input[3].trim().parse::<i32>().unwrap();
+
+    let result = kangaroo(x1, v1, x2, v2);
+
+    writeln!(&mut fptr, "{}", result).ok();
+}
+
+ 
+// Between Two Sets 13
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, Write};
+
+/*
+ * Complete the 'getTotalX' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER_ARRAY a
+ *  2. INTEGER_ARRAY b
+ */
+
+fn getTotalX(a: &[i32], b: &[i32]) -> i32 {
+    let max_a = *a.iter().max().unwrap();
+    let min_b = *b.iter().min().unwrap();
+    let mut count = 0;
+
+    for x in max_a..=min_b {
+        if a.iter().all(|&num| x % num == 0) && b.iter().all(|&num| num % x == 0) {
+            count += 1;
+        }
+    }
+    
+    count
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let mut fptr = File::create(env::var("OUTPUT_PATH").unwrap()).unwrap();
+
+    let first_multiple_input: Vec<String> = stdin_iterator.next().unwrap().unwrap()
+        .split(' ')
+        .map(|s| s.to_string())
+        .collect();
+
+    let n = first_multiple_input[0].trim().parse::<i32>().unwrap();
+
+    let m = first_multiple_input[1].trim().parse::<i32>().unwrap();
+
+    let arr: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    let brr: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    let total = getTotalX(&arr, &brr);
+
+    writeln!(&mut fptr, "{}", total).ok();
+}
+
+ 
 
