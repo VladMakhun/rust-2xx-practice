@@ -41,3 +41,5 @@ fn main() {
     }
     println!("Number of solutions: {}", solutions.len());
 }
+
+//5. скільки рішень має задача? задача має 8 рішень
