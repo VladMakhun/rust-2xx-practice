@@ -609,5 +609,369 @@ fn main() {
     writeln!(&mut fptr, "{}", total).ok();
 }
 
- 
+
+//Breaking the Records 14
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, Write};
+
+/*
+ * Complete the 'breakingRecords' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts INTEGER_ARRAY scores as parameter.
+ */
+
+fn breakingRecords(scores: &[i32]) -> Vec<i32> {
+    let mut min_count = 0;
+    let mut max_count = 0;
+    if scores.is_empty() { 
+        return vec![max_count, min_count];
+    } 
+    let mut min_score = scores[0];
+    let mut max_score = scores[0];
+    for &score in scores.iter().skip(1) {
+        if score > max_score { 
+            max_score = score;
+            max_count += 1;
+    }   
+         if score < min_score { 
+            min_score = score; min_count += 1;
+        } 
+    } 
+            vec![max_count, min_count]
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let mut fptr = File::create(env::var("OUTPUT_PATH").unwrap()).unwrap();
+
+    let n = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
+
+    let scores: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    let result = breakingRecords(&scores);
+
+    for i in 0..result.len() {
+        write!(&mut fptr, "{}", result[i]).ok();
+
+        if i != result.len() - 1 {
+            write!(&mut fptr, " ").ok();
+        }
+    }
+
+    writeln!(&mut fptr).ok();
+}
+
+
+//Subarray Division 15
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, Write};
+
+/*
+ * Complete the 'birthday' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER_ARRAY s
+ *  2. INTEGER d
+ *  3. INTEGER m
+ */
+
+fn birthday(s: &[i32], d: i32, m: i32) -> i32 {
+    let n = s.len() as i32;
+    let mut count = 0;
+    
+    for i in 0..=(n - m) {
+        let sum: i32 = s[i as usize..(i + m) as usize].iter().sum();
+        if sum == d {
+            count += 1;
+        }
+    }
+    count
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let mut fptr = File::create(env::var("OUTPUT_PATH").unwrap()).unwrap();
+
+    let n = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
+
+    let s: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    let first_multiple_input: Vec<String> = stdin_iterator.next().unwrap().unwrap()
+        .split(' ')
+        .map(|s| s.to_string())
+        .collect();
+
+    let d = first_multiple_input[0].trim().parse::<i32>().unwrap();
+
+    let m = first_multiple_input[1].trim().parse::<i32>().unwrap();
+
+    let result = birthday(&s, d, m);
+
+    writeln!(&mut fptr, "{}", result).ok();
+}
+
+
+// Divisible Sum Pairs 16 
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, Write};
+
+/*
+ * Complete the 'divisibleSumPairs' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER n
+ *  2. INTEGER k
+ *  3. INTEGER_ARRAY ar
+ */
+
+fn divisibleSumPairs(n: i32, k: i32, ar: &[i32]) -> i32 {
+    let mut count = 0;
+     for i in 0..n as usize { 
+         for j in i + 1..n as usize { 
+             if (ar[i] + ar[j]) % k == 0 { 
+                 count += 1; } 
+                 } 
+                 
+          } 
+                 count
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let mut fptr = File::create(env::var("OUTPUT_PATH").unwrap()).unwrap();
+
+    let first_multiple_input: Vec<String> = stdin_iterator.next().unwrap().unwrap()
+        .split(' ')
+        .map(|s| s.to_string())
+        .collect();
+
+    let n = first_multiple_input[0].trim().parse::<i32>().unwrap();
+
+    let k = first_multiple_input[1].trim().parse::<i32>().unwrap();
+
+    let ar: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    let result = divisibleSumPairs(n, k, &ar);
+
+    writeln!(&mut fptr, "{}", result).ok();
+}
+
+
+// Migratory Birds 17 
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, Write};
+use std::collections::HashMap;
+
+/*
+ * Complete the 'migratoryBirds' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts INTEGER_ARRAY arr as parameter.
+ */
+
+fn migratoryBirds(arr: &[i32]) -> i32 {
+    let mut count_map = HashMap::new();
+      for &bird in arr { 
+          *count_map.entry(bird).or_insert(0) += 1;
+        } 
+        let mut most_common = 0;
+        let mut highest_count = 0;
+        
+        for (&bird, &count) in &count_map {
+             if count > highest_count || (count == highest_count && bird < most_common) { most_common = bird; highest_count = count; 
+             } 
+        } 
+        most_common
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let mut fptr = File::create(env::var("OUTPUT_PATH").unwrap()).unwrap();
+
+    let _arr_count = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
+
+    let arr: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    let result = migratoryBirds(&arr);
+
+    writeln!(&mut fptr, "{}", result).ok();
+}
+
+
+// Bill Division 18 
+
+use std::io::{self, BufRead};
+
+/*
+ * Complete the 'bonAppetit' function below.
+ *
+ * The function accepts following parameters:
+ *  1. INTEGER_ARRAY bill
+ *  2. INTEGER k
+ *  3. INTEGER b
+ */
+
+fn bonAppetit(bill: &[i32], k: i32, b: i32) {
+    let total_cost: i32 = bill.iter().enumerate().filter(|&(i, _)| i != k as usize).map(|(_, &cost)| cost).sum();
+    let share = total_cost / 2;
+      if share == b { 
+          println!("Bon Appetit"); 
+        } else { 
+            println!("{}", b - share);
+        }
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let first_multiple_input: Vec<String> = stdin_iterator.next().unwrap().unwrap()
+        .split(' ')
+        .map(|s| s.to_string())
+        .collect();
+
+    let n = first_multiple_input[0].trim().parse::<i32>().unwrap();
+
+    let k = first_multiple_input[1].trim().parse::<i32>().unwrap();
+
+    let bill: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    let b = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
+
+    bonAppetit(&bill, k, b);
+}
+
+
+// Sales by Match 19
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, Write};
+use std::collections::HashMap;
+
+/*
+ * Complete the 'sockMerchant' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER n
+ *  2. INTEGER_ARRAY ar
+ */
+
+fn sockMerchant(n: i32, ar: &[i32]) -> i32 {
+    let mut count_map = HashMap::new();
+      for &sock in ar { 
+          *count_map.entry(sock).or_insert(0) += 1;
+        }  
+        let mut pairs = 0;
+         for &count in count_map.values() { 
+             pairs += count / 2; 
+            } 
+            pairs
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let mut fptr = File::create(env::var("OUTPUT_PATH").unwrap()).unwrap();
+
+    let n = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
+
+    let ar: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim_end()
+        .split(' ')
+        .map(|s| s.to_string().parse::<i32>().unwrap())
+        .collect();
+
+    let result = sockMerchant(n, &ar);
+
+    writeln!(&mut fptr, "{}", result).ok();
+}
+
+
+// Drawing Book 20
+
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, Write};
+
+/*
+ * Complete the 'pageCount' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER n
+ *  2. INTEGER p
+ */
+
+fn pageCount(n: i32, p: i32) -> i32 {
+    let from_front = p / 2;
+    let from_back = if n % 2 == 0 {
+         (n - p + 1) / 2 
+         } else { 
+             (n - p) / 2
+        };  
+        from_front.min(from_back)
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
+
+    let mut fptr = File::create(env::var("OUTPUT_PATH").unwrap()).unwrap();
+
+    let n = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
+
+    let p = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
+
+    let result = pageCount(n, p);
+
+    writeln!(&mut fptr, "{}", result).ok();
+}
+
+
+
+
+
 
